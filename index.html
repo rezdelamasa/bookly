@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<title>Bookly - Bookmark Manager</title>
+
+		<!-- Meta tags -->
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	    <!-- Links -->
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script src="https://use.fontawesome.com/0821b2f067.js"></script>
+
+	</head>
+	<body ng-app='bookly' ng-controller='BookmarkController'>
+		<div class='container-fluid' id='main-container'>
+			<div class='row' ng-class='{darken:showDeletePrompt}'>
+				<nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+					<a id='brand' class="navbar-brand" href="#">Bookly</a>
+		        	<ul class="nav nav-pills flex-column" ng-mouseleave='toggleEditor($index)'>
+		        		<li class='nav-item' ng-mouseenter='hideEditor()'>
+		        			<a class="nav-link" href="#" ng-click='setAll()' ng-class='{active:activeFolder == "All", orange: allOrSettings == "Settings"}'>{{allOrSettings}}<span id='folder-settings' ng-click='toggleSettings()'>
+		        				<i class="fa fa-bars" aria-hidden="true"></i>
+</span></a>
+		        		</li>
+		        		<li class='nav-item' ng-mouseenter='hideEditor()'>
+		        			<a class="nav-link" href="#" ng-click='toggleFavorites()' ng-class='{active:activeFolder == "Favorites"}'>Favorites</a>
+		        		</li>
+			            <li class="nav-item" ng-repeat='folder in categories' ng-mouseenter='toggleEditor($index)' ng-mouseleave='hideEditor()'>
+			              	<!-- <a href="#" id='pencil-button'><i class="fa fa-pencil" aria-hidden="true"></i></a> -->
+			              	<span id='pencil-button' ng-class='{hide:$index != editorIndex}' ng-click='toggleEditor()'>	
+			              		<a href="#"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+			              	</span>
+			              	<a class="nav-link" href="#" ng-click='setActive(folder); toggleFolderEditor()' ng-class='{active:activeFolder === folder}'>{{folder}}</a>
+			              	<!-- <form class='folder-editor-form' ng-show='showEditButtons' ng-submit='toggleEditButtons()'>
+			              		<input type="text" class='folder-editor-text' ng-model='folder'>
+			              	</form> -->
+			            </li>
+			            <form id='new-folder-form' ng-show='showSettings' ng-submit='submit()'>
+			            	<input type="text" id='new-folder-input' ng-model='text' placeholder="Add New">
+			            	<input type="submit" id="submit" value='+'>
+			            </form>
+			        </ul>
+		        </nav>
+				
+				<div id='bookmark-panel' class='col-11 col-md-10'>
+
+					<!-- Bookmark panel header -->
+					<div id='bookmark-folder-container'>
+						<h1 id='bookmark-folder'>
+
+							<!-- Delete folder button (when clicked modal will popup) -->
+							<span ng-show='showSettings && (activeFolder != "All" && activeFolder != "Favorites")' data-toggle="modal" data-target="#exampleModal">
+								<a id='trash-button' href="#">
+									<i class="fa fa-trash" aria-hidden="true" ></i>
+								</a>
+							</span>
+							<span ng-click='toggleNameEditor($index)' ng-hide='showNameEditor'>{{activeFolder}}</span>
+							<form id='name-editor' ng-submit='changeName(newName)' ng-show='showNameEditor'>
+								<input id='name-text' type="text" name="folder-name" ng-model='newName'>
+								<input id='name-submit' type="submit" tabindex="-1" />
+							</form>
+							<span id='new-bookmark-button' ng-click='toggleNew()'>New Bookmark {{menuSymbol}}</span>
+						</h1>
+						<hr>
+					</div>
+
+					<!-- Create new bookmark form -->
+					<div id='new-bookmark-menu' ng-show='showNew'>
+						<form ng-submit='addBookmark()'>
+							<input type="text" id='new-title' class='new-input' placeholder="Title" ng-model='newTitle'>
+							<input type="url" id='new-link' class='new-input' placeholder="Link (http://www.example.com)" ng-model='newLink'>
+							<input type="text" name="folder" id='new-folder' class='new-input' placeholder="{{newFolder}}" ng-model='newFolder'>
+							<input type="submit" name="new-submit" id='new-submit' class='new-input' value='Create'>
+						</form>
+					</div>
+
+					<!-- Bookmark items (repeat for every bookmark) -->
+					<div class='bookmark-panel-item' ng-repeat='bookmark in bookmarks' ng-show='isActiveFolder($index)'>
+
+						<!-- Bookmark text (title, description, link) -->
+						<div class='bookmark-container' ng-hide='editing == $index'>
+							<a href='{{bookmark.link}}' target='_blank' class='title'>{{bookmark.title}}</a>
+							<p class='bookmark-folder' ng-show='activeFolder == "All"'>{{bookmark.folder}}</p>
+							<p class='bookmark-link'>{{bookmark.link}}</p>
+						</div>
+
+						<!-- Bookmark editor form -->
+						<div class='bookmark-editor-form-container' ng-show='editing == $index '>
+							<form class='bookmark-editor-form' ng-submit='updateBookmark($index, bookmark.folder)'>
+								<input type="text" name="New Bookmark Title" class='bookmark-editor-input' placeholder="{{bookmark.title}}"
+								ng-model='bookmark.title'>
+								<input type="text" name="New Bookmark Link" class='bookmark-editor-input' placeholder="{{bookmark.link}}" ng-model='bookmark.link'>
+								<input type="text" name="New Bookmark Folder" class="bookmark-editor-input" placeholder="{{bookmark.folder}}" ng-model='bookmark.folder'>
+								<a href="#" id='bookmark-editor-submit'><input type="submit" name="Update" value="Update"></a>
+							</form>
+						</div>
+
+						<!-- Bookmark buttons (favorite, edit, delete) -->
+						<div id='bookmark-toolbar'>
+							<button id='favorite-bookmark-button' class='bookmark-toolbar-button' ng-class='{yellow:bookmark.favorite}' ng-click='favorite($index)'>
+								<i class="fa fa-star" aria-hidden="true"></i>
+							</button>
+							<button id='edit-bookmark-button' class='bookmark-toolbar-button' ng-click='toggleEditing($index)'>
+								<i class="fa fa-pencil" aria-hidden="true"></i>
+							</button>
+							<button id='delete-bookmark-button' class='bookmark-toolbar-button' data-toggle="modal" data-target="#delete-bookmark-modal">
+								<i class="fa fa-trash" aria-hidden="true"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  	<div class="modal-dialog" role="document">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h5 class="modal-title" id="exampleModalLabel">Delete {{activeFolder}}</h5>
+		        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          		<span aria-hidden="true">&times;</span>
+		        		</button>
+		      		</div>
+		      		<div class="modal-body">
+		      			<p>Are you sure you want to delete "{{activeFolder}}"? This will also delete all bookmarks under this folder.</p>
+		   		    </div>
+		    		<div class="modal-footer">
+		     			<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		        		<button type="button" class="btn btn-primary" ng-click='deleteFolder($index)' data-dismiss="modal">Delete</button>
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>
+
+		<div class="modal fade" id="delete-bookmark-modal" tabindex="-1" role="dialog" aria-labelledby="delete-bookmark-modal-label" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="delete-bookmark-modal-label">Delete Bookmark</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		      	<p>Are you sure you want to delete this bookmark? This is permanent.</p>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		        <button type="button" class="btn btn-primary" ng-click='deleteBookmark($index)'' data-dismiss="modal">Delete</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div id='delete-prompt' ng-show='showDeletePrompt'>
+			<p id='delete-text'>Are you sure you want to delete "{{activeFolder}}"? This will also delete all bookmarks under this folder.</p>
+			<button class='btn btn-success' id='delete'>Delete</button>
+			<button class='btn btn-warning' id='cancel'>Cancel</button>
+		</div>
+
+
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+		<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js'></script>
+		<script type="text/javascript" src='javascript/app.js'></script>
+
+	</body>
+</html>

@@ -1,0 +1,375 @@
+
+
+html, body {
+	width: 100%;
+	/*height: 100vh;*/
+	overflow-x: hidden;
+	min-height: 100%;
+}
+
+#main-container {
+	height: 100vh;
+	/*width: 100%;*/
+	min-height: 100%;
+
+}
+
+.row {
+	width: 100%;
+	width: 100vw;
+	height: 100vh;
+
+}
+
+#folder-panel {
+	background-color: blue;
+	/*height: 100vh;*/
+	max-width: 400px;
+	padding: 25px 40px;
+	height: 100vh;
+	overflow-y: scroll;
+
+}
+
+#folder-panel-content {
+	margin: 0 auto;
+	/*border: 2px solid red;*/
+
+}
+
+#folder-panel-header {
+	text-align: center;
+	margin: 25px 0 50px 0;
+	font-size: 50px;
+}
+
+.folder-panel-text {
+	font-size: 24px;
+}
+
+.nav-link {
+	/*border: 2px solid red;*/
+}
+
+#bookmark-panel {
+	background-color: #ededed;
+	padding: 0;
+	/*height: 100vh;*/
+	height: 100vh;
+	overflow-y: scroll;
+
+}
+
+.bookmark-panel-item {
+	background-color: #f8f9fa!important;
+	color: #333;
+	max-width: 85%;
+	padding: 20px 40px;
+	/*height: 250px;*/
+	margin: 40px auto;
+	border-radius: 5px;
+	-webkit-box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+	-moz-box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+	box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+}
+
+#brand {
+	width: 100%;
+	text-align: center;
+	margin: 25px auto;
+	font-size: 48px;
+	font-weight: bold;
+}
+
+#bookmark-folder-container {
+	max-width: 85%;
+	margin: 40px auto;
+}
+
+
+.title {
+	font-size: 28px;
+	color: #333;
+}
+
+.title:hover {
+	text-decoration: none;
+}
+
+#new-folder-form {
+	width: 90%;
+	margin: 0 auto;
+	text-align: center;
+	border-bottom: 2px solid #a9a9a9;
+	padding: 0;
+}
+
+#new-folder-input {
+	width: 85%;
+	border: none;
+	height: 40px;
+	display: inline-block;
+	background-color: transparent;
+	margin-bottom: 0;
+	float: left;
+}
+
+#new-folder-input:focus {
+	outline: none;
+}	
+
+#submit {
+	height: 40px;
+	font-size: 24px;
+	color: #a9a9a9;
+	background-color: transparent;
+	display: inline-block;
+	border: none;
+	float: right;
+}
+
+#submit:hover {
+	cursor: pointer;
+	color: #007bff;
+}
+
+#submit:focus {
+	outline: none;
+}
+
+.hide {
+	display: none!important;
+}
+
+#new-bookmark-button {
+	float: right;
+	margin-right: 40px;
+	font-size: 24px;
+	line-height: 60px;
+}
+
+#new-bookmark-button:hover {
+	cursor: pointer;
+	color: #007bff;
+}
+
+#new-bookmark-menu {
+	background-color: #f8f9fa!important;
+	color: #333;
+	max-width: 85%;
+	padding: 20px 40px;
+	/*height: 250px;*/
+	margin: 40px auto;
+	-webkit-box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+	-moz-box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+	box-shadow: 4px 4px 12px 0px rgba(168,168,168,1);
+	text-align: center;
+
+}
+
+.new-input {
+	width: 100%;
+	margin: 10px 0;
+	height: 50px;
+	padding: 0 20px;
+	border: none;
+	background-color: transparent;
+	border-bottom: 2px solid #a9a9a9;
+	font-size: 20px;
+}
+
+.new-input:focus {
+	border-bottom: 2px solid #007bff;
+	outline: none;
+}
+
+#new-submit {
+	width: 15%;
+	color: #a9a9a9;
+	border-bottom: 2px solid #a9a9a9;
+}
+
+#new-submit:hover {
+	cursor: pointer;
+	border-bottom: 2px solid #007bff;
+	color: #007bff;
+}
+
+#new-submit:focus {
+	border-bottom: 2px solid #a9a9a9;
+}
+
+#folder-settings {
+	font-size: 20px;
+	line-height: 2px;
+	float: right;
+}
+
+#folder-settings:hover {
+	cursor: pointer;
+}
+
+.delete-folder-button {
+	float: left;
+}
+
+#pencil-button {
+	margin: 0 15px;
+	float: left;
+	line-height: 35px;
+}
+
+.nav-item {
+	height: 40px;
+}
+
+.folder-editor-form {
+	height: 40px;
+	border: 2px solid red;
+}
+
+.folder-editor-text {
+	width: 100%;
+	height: 100%;
+	color: #aaa;
+	border: none;
+	border-bottom: 2px solid #007bff;
+	padding-left: 16px;
+}
+
+.display {
+	display: none;
+}
+
+.orange {
+	background-color: #ffaa00!important;
+	color: white;
+}
+
+.active {
+	background-color: #007bff;
+	color: white;
+}
+
+#delete-button:hover {
+	text-decoration: none;
+}
+
+#delete-prompt {
+	width: 300px;
+	height: 200px;
+	position: absolute;
+	left: 50%;
+	top: 10%;
+	margin-left: -150px;
+	background-color: #f8f9fa;
+}
+
+.darken {
+	opacity: 1;
+}
+
+#delete-prompt {
+	text-align: center;
+	width: 500px;
+	margin-left: -250px;
+}
+
+#delete-text {
+	margin: 30px;
+}
+
+#delete {
+	width: 25%;
+	margin: 25px 12%;
+}
+
+#cancel {
+	width: 25%;
+	margin: 25px 12%;
+}
+
+#trash-button {
+	color: red;
+}
+
+#trash-button:hover {
+	text-decoration: none;
+}
+
+#name-editor {
+	display: inline-block;
+}
+
+#name-submit {
+	position: absolute; 
+	left: -9999px; 
+	width: 1px; 
+	height: 1px;
+}
+
+#bookmark-toolbar {
+	margin: 10px 0;
+}
+
+.bookmark-toolbar-button {
+	border: none;
+	background-color: transparent;
+	font-size: 22px;
+	margin-right: 20px;
+	height: 20px;
+	color: #a9a9a9;
+}
+
+.bookmark-toolbar-button:focus {
+	outline: none;
+}
+
+.bookmark-toolbar-button:hover {
+	cursor: pointer;
+}
+
+#favorite-bookmark-button:hover {
+	color: #f4d142;
+}
+
+#edit-bookmark-button:hover {
+	color: #f49441;
+}
+
+#delete-bookmark-button:hover {
+	color: #f44f41;
+}
+
+.bookmark-link {
+	color: #777;
+	font-size: 18px;
+}
+
+.bookmark-folder {
+	font-size: 24px;
+	margin-top: 10px;
+	color: #777;
+	margin-bottom: 5px;
+}
+
+.yellow {
+	color: #f4d142;
+}
+
+.bookmark-editor-input {
+	width: 100%;
+	height: 50px;
+	margin: 10px 0;
+	font-size: 20px;
+	border: none;
+	color: #333;
+	border-bottom: 2px solid #a9a9a9;
+	background-color: transparent;
+}
+
+.bookmark-editor-input:focus {
+	border-bottom: 2px solid #007bff;
+	outline: none;
+}
+
